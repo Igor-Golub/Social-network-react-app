@@ -3,7 +3,7 @@ import s from './Mesages.module.css';
 import {NavLink} from "react-router-dom";
 
 
-const Messages = () => {
+const Messages: React.FC = () => {
     return (
         <div className={s.navItem}>
             <NavLink to='/dialogs' activeClassName={s.active}>

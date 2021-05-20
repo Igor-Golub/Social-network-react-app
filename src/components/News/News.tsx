@@ -1,11 +1,11 @@
 import React from 'react';
 
-const Setting = () => {
+const News: React.FC = () => {
     return (
         <div>
-            Setting
+            News
         </div>
     )
 }
 
-export default Setting;
+export default News;

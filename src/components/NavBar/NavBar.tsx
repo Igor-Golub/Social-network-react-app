@@ -7,7 +7,7 @@ import Setting from "./Setting/Setting";
 import Profile from "./Profile/Profile";
 import Users from "./Users/Users";
 
-const Navbar = () => {
+const Navbar: React.FC = () => {
     return (
         <div className={s.nav}>
                 <Profile/>

@@ -3,12 +3,12 @@ import s from './News.module.css';
 import {NavLink} from "react-router-dom";
 
 
-const News = () => {
+const Music: React.FC = () => {
     return (
         <div className={s.navItem}>
-            <NavLink to='/news' activeClassName={s.active}>News</NavLink>
+            <NavLink to='/music' activeClassName={s.active}>Music</NavLink>
         </div>
     )
 }
 
-export default News;
+export default Music;

@@ -13,7 +13,10 @@ const instance = axios.create({
 
 export enum ResultCode {
     Success= 0,
-    Error= 1,
+    Error= 1
+}
+
+export enum ResultCodeForCaptcha {
     CaptchaIsRequired = 10
 }
 
@@ -80,7 +83,7 @@ type MeResponseType = {
 }
 type AuthLoginResponseType = {
     data: { id: number }
-    resultCode: ResultCode
+    resultCode: ResultCode | ResultCodeForCaptcha
     messages: Array<string>
 }
 type AuthLogoutResponseType = {

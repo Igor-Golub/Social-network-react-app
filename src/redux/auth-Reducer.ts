@@ -1,5 +1,5 @@
 import { ThunkAction } from "redux-thunk";
-import {authAPI, ResultCode, securityAPI} from "../api/api";
+import {authAPI, ResultCode, ResultCodeForCaptcha, securityAPI} from "../api/api";
 import {AppStateType} from "./redux-store";
 
 const SET_USER_DATA: string = 'samurai-network/auth/SET_USER_DATA';
@@ -82,7 +82,7 @@ export const authLogin = (email: string, password: string,
     debugger
     if (authLoginData.resultCode === ResultCode.Success) {
         dispatch(authMe())
-    } else if (authLoginData.resultCode === ResultCode.CaptchaIsRequired) {
+    } else if (authLoginData.resultCode === ResultCodeForCaptcha.CaptchaIsRequired) {
         dispatch(getCaptchaUrl())
     }
 }

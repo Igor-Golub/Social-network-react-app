@@ -5,7 +5,7 @@ import {authLogin, authLogout} from "../../redux/auth-Reducer";
 import {Redirect} from "react-router-dom";
 
 
-const Login = ({authLogin, isAuth, captchaUrl}) => {
+const Login = ({ authLogin, isAuth, captchaUrl }) => {
 
     const onSubmit = (values) => {
         console.log(values)

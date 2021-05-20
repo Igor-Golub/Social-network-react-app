@@ -5,7 +5,7 @@ import ContentFriends from "./ContentTBIFriends/ContentFriends";
 
 
 
-const TestBlokInformation = () => {
+const TestBlokInformation:React.FC = () => {
     return (
         <div className={s.TBIWrapper}>
             <TitleFriends/>

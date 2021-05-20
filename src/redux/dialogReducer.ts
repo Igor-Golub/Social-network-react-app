@@ -4,8 +4,8 @@ type InitialStateType = {
     dialogs: Array<DialogsType>
     messages: Array<MessagesType>
 }
-type DialogsType = { id: string, name: string }
-type MessagesType = { id: string, message: string }
+export type DialogsType = { id: string, name: string }
+export type MessagesType = { id: string, message: string }
 
 const initialState: InitialStateType = {
     dialogs: [

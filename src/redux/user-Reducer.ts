@@ -1,21 +1,21 @@
-import {ResultCode, usersAPI} from "../api/api";
-import {updateObjectInArray} from "../utils/object-iterations";
-import {UserType} from "../Types/СommonTypes";
-import {Dispatch} from "redux";
-import {AppStateType} from "./redux-store";
+import {ResultCode, usersAPI} from '../api/api'
+import {updateObjectInArray} from '../utils/object-iterations'
+import {UserType} from '../Types/СommonTypes'
+import {Dispatch} from 'redux'
+import {AppStateType} from './redux-store'
 
-const FOLLOW: string = 'samurai-network/user/FOLLOW';
-const UNFOLLOW: string = 'samurai-network/user/UNFOLLOW';
-const SET_USERS: string = 'samurai-network/user/SET_USERS';
-const SET_CURRENT_PAGE: string = 'samurai-network/user/SET_CURRENT_PAGE';
-const SET_TOTAL_USERS_COUNT: string = 'samurai-network/user/SET_TOTAL_USERS_COUNT';
-const TOGGLE_IS_FETCHING: string = 'samurai-network/user/TOGGLE_IS_FETCHING';
-const TOGGLE_IS_FOLLOWING_PROGRESS: string = 'samurai-network/user/TOGGLE_IS_FOLLOWING_PROGRESS';
+const FOLLOW: string = 'samurai-network/user/FOLLOW'
+const UNFOLLOW: string = 'samurai-network/user/UNFOLLOW'
+const SET_USERS: string = 'samurai-network/user/SET_USERS'
+const SET_CURRENT_PAGE: string = 'samurai-network/user/SET_CURRENT_PAGE'
+const SET_TOTAL_USERS_COUNT: string = 'samurai-network/user/SET_TOTAL_USERS_COUNT'
+const TOGGLE_IS_FETCHING: string = 'samurai-network/user/TOGGLE_IS_FETCHING'
+const TOGGLE_IS_FOLLOWING_PROGRESS: string = 'samurai-network/user/TOGGLE_IS_FOLLOWING_PROGRESS'
 
 type InitialStateType = typeof initialState
 const initialState = {
     users: [] as Array<UserType>,
-    pageSize: 10,
+    pageSize: 6,
     totalUsersCount: 0,
     currentPage: 1,
     isFetching: false,

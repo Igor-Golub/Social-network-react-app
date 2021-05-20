@@ -1,9 +1,7 @@
 import React from "react";
 import s from './TitleFriends.module.css';
 
-
-
-const TitleFriends = () => {
+const TitleFriends: React.FC = () => {
     return (
         <div className={s.titleFiends}>
             Friends
