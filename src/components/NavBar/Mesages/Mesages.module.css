@@ -1,0 +1,9 @@
+.navItem a {
+    color: black;
+    text-decoration: none;
+}
+
+.navItem a.active {
+    color: gray;
+}
+

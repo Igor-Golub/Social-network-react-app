@@ -1,0 +1,11 @@
+.titleFiends {
+    background-color: white;
+    margin: 15px 0;
+    width: 85%;
+    height: 40px;
+    line-height: 40px;
+    font-size: larger;
+    border-bottom: 1px solid black;
+    margin: 0 auto;
+    text-align: center;
+}

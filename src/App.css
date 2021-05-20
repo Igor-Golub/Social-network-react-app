@@ -1,0 +1,28 @@
+body {
+    margin: 20px;
+}
+.app-wrapper {
+    display: grid;
+    grid-column-gap: 5px;
+    grid-row-gap: 5px;
+    padding: 5px 0 0 0;
+    width: 100%;
+    margin: 0 auto;
+
+    grid-template-areas:
+  "head head head"
+  "nav con inf";
+
+    grid-template-rows: 70px 1fr;
+    grid-template-columns: 4fr 20fr 3fr;
+}
+
+.app-wrapper-content {
+    grid-area: con;
+    background-color: white;
+    border: 1px solid black;
+
+}
+
+
+

@@ -1,0 +1,5 @@
+.TBIWrapper {
+    grid-area: inf;
+    border: 1px solid black;
+    background-color: white;
+}
