@@ -6,7 +6,7 @@ const HeaderLogin = (props) => {
     return (
         <div className={s.wrapperHeaderButton}>
             {props.isAuth
-                ?<div>{props.login} <button onClick={props.authLogout}>Log out</button></div>
+                ? <div>{props.login} <button onClick={props.authLogout}>Log out</button></div>
                 : <NavLink to={'/login'} className={s.headerButton}>Login</NavLink>}
         </div>
     )

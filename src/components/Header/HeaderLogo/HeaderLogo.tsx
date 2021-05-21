@@ -2,7 +2,7 @@ import React from "react";
 import s from './HeaderLogo.module.css';
 
 
-const HeaderLogo = () => {
+const HeaderLogo: React.FC = () => {
     return (
         <div className={s.headerLogo}>
             <img alt={'#'} src="https://png.pngtree.com/png-vector/20191021/ourlarge/pngtree-black-feather-vector-logo-design-png-image_1840012.jpg"/>

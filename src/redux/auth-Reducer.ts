@@ -76,17 +76,19 @@ export const getCaptchaUrl = (): ThunksType => async (dispatch) => {
     const captchaUrl = getCaptchaUrlData.url
     dispatch(getCaptchaUrlSuccess(captchaUrl))
 }
+
 export const authLogin = (email: string, password: string,
                           rememberMe: boolean, captchaUrl: string): ThunksType => async (dispatch) => {
     const authLoginData = await authAPI.authLogin(email, password, rememberMe, captchaUrl)
-    debugger
     if (authLoginData.resultCode === ResultCode.Success) {
         dispatch(authMe())
     } else if (authLoginData.resultCode === ResultCodeForCaptcha.CaptchaIsRequired) {
         dispatch(getCaptchaUrl())
     }
 }
+
 export const authLogout = (): ThunksType => async (dispatch) => {
+    debugger
     const authLogoutData = await authAPI.authLogout()
     if (authLogoutData.resultCode === ResultCode.Success) {
         dispatch(setAuthUserData(null, null, null, false))

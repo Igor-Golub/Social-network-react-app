@@ -5,7 +5,7 @@ import HeaderName from "./HeaderName/HeaderName";
 import HeaderLoginContainer from "./HeaderLogin/HeaderLoginContainer";
 
 
-const Header = () => {
+const Header: React.FC = () => {
     return (
         <header className={s.header}>
             <HeaderLogo/>
