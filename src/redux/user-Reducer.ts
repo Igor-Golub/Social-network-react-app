@@ -1,8 +1,9 @@
-import {ResultCode, usersAPI} from '../api/api'
+import {ResultCodeEnum} from '../api/api'
 import {updateObjectInArray} from '../utils/object-iterations'
-import {UserType} from '../Types/СommonTypes'
+import {UserType} from '../types/СommonTypes'
 import {Dispatch} from 'redux'
 import {AppStateType} from './redux-store'
+import { usersAPI } from '../api/users-api'
 
 const FOLLOW: string = 'samurai-network/user/FOLLOW'
 const UNFOLLOW: string = 'samurai-network/user/UNFOLLOW'
@@ -71,8 +72,8 @@ export const unfollow = (userId: number): UnfollowActionType => {
     return { type: UNFOLLOW, userId }
 }
 
-type SetUsersActionType = { type: typeof SET_USERS, users: UserType }
-export const setUsers = (users: UserType): SetUsersActionType => {
+type SetUsersActionType = { type: typeof SET_USERS, users: Array<UserType> }
+export const setUsers = (users: Array<UserType>): SetUsersActionType => {
     return { type: SET_USERS, users }
 }
 
@@ -123,7 +124,7 @@ const followUnfollowFlow = async (dispatch: DispatchType, id: number,
                                   apiMethod: any, actionCreator: (id: number) => FollowActionType | UnfollowActionType) => {
     dispatch(toggleFollowingProgress(true, id))
     const response = await apiMethod(id)
-        if (response.data.resultCode === ResultCode.Success) {dispatch(actionCreator(id));            }
+        if (response.data.resultCode === ResultCodeEnum.Success) {dispatch(actionCreator(id));            }
     dispatch(toggleFollowingProgress(false, id))
 }
 

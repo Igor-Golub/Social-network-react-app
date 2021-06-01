@@ -1,6 +1,8 @@
 import { ThunkAction } from "redux-thunk";
-import {authAPI, ResultCode, ResultCodeForCaptcha, securityAPI} from "../api/api";
 import {AppStateType} from "./redux-store";
+import {securityAPI} from "../api/security-api";
+import { authAPI } from "../api/auth-api";
+import {ResultCodeEnum, ResultCodeForCaptchaEnum} from "../api/api";
 
 const SET_USER_DATA: string = 'samurai-network/auth/SET_USER_DATA';
 const SET_CAPTCHA_URL_SUCCESS: string = 'samurai-network/auth/SET_CAPTCHA_URL';
@@ -66,7 +68,7 @@ type ThunksType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes
 
 export const authMe = (): ThunksType  => async (dispatch) => {
     const meData = await authAPI.authMe();
-    if (meData.resultCode === ResultCode.Success) {
+    if (meData.resultCode === ResultCodeEnum.Success) {
         let {id, email, login} = meData.data;
         dispatch(setAuthUserData(id, email, login, true))
     }
@@ -80,9 +82,9 @@ export const getCaptchaUrl = (): ThunksType => async (dispatch) => {
 export const authLogin = (email: string, password: string,
                           rememberMe: boolean, captchaUrl: string): ThunksType => async (dispatch) => {
     const authLoginData = await authAPI.authLogin(email, password, rememberMe, captchaUrl)
-    if (authLoginData.resultCode === ResultCode.Success) {
+    if (authLoginData.resultCode === ResultCodeEnum.Success) {
         dispatch(authMe())
-    } else if (authLoginData.resultCode === ResultCodeForCaptcha.CaptchaIsRequired) {
+    } else if (authLoginData.resultCode === ResultCodeForCaptchaEnum.CaptchaIsRequired) {
         dispatch(getCaptchaUrl())
     }
 }
@@ -90,7 +92,7 @@ export const authLogin = (email: string, password: string,
 export const authLogout = (): ThunksType => async (dispatch) => {
     debugger
     const authLogoutData = await authAPI.authLogout()
-    if (authLogoutData.resultCode === ResultCode.Success) {
+    if (authLogoutData.resultCode === ResultCodeEnum.Success) {
         dispatch(setAuthUserData(null, null, null, false))
     }
 }

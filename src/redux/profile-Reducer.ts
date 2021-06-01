@@ -1,6 +1,6 @@
-import {profileAPI} from "../api/api";
-import {PhotosType, ProfileUserType} from "../Types/СommonTypes";
+import {PhotosType, ProfileUserType} from "../types/СommonTypes";
 import {Dispatch} from "redux";
+import {profileAPI} from "../api/profile-api";
 
 const ADD_POST: string = 'samurai-network/profile/ADD_POST';
 const SET_USERS_PROFILE: string = 'samurai-network/profile/SET_USERS_PROFILE';
@@ -97,30 +97,30 @@ export const saveProfileSuccess = (profile: any): SaveProfileSuccessActionType =
 type DispatchType = Dispatch<ActionsTypes>
 
 export const getUsersProfile = (userId: number) => async (dispatch: DispatchType) => {
-    const response = await profileAPI.getUsersProfile(userId);
-    dispatch(setUsersProfile(response.data))
+    const data = await profileAPI.getUsersProfile(userId);
+    dispatch(setUsersProfile(data))
 }
 
 export const getStatus = (userId: number) => async (dispatch: DispatchType) => {
-    const response = await profileAPI.getStatus(userId);
-    dispatch(setUserProfileStatus(response.data))
+    const data = await profileAPI.getStatus(userId);
+    dispatch(setUserProfileStatus(data))
 }
 export const updateStatus = (status: string) => async (dispatch: DispatchType) => {
-    const response = await profileAPI.updateStatus(status);
-    if (response.data.resultCode === 0) {
+    const data = await profileAPI.updateStatus(status);
+    if (data.resultCode === 0) {
         dispatch(setUserProfileStatus(status))
     }
 }
 export const savePhoto = (file: any) => async (dispatch: DispatchType) => {
-    const response = await profileAPI.savePhoto(file);
-    if (response.data.resultCode === 0) {
-        dispatch(savePhotoSuccess(response.data.data.photos))
+    const data = await profileAPI.savePhoto(file);
+    if (data.resultCode === 0) {
+        dispatch(savePhotoSuccess(data.data.photos))
     }
 }
 export const saveProfile = (profile: ProfileUserType) => async (dispatch: any, getState: any) => {
     const userId = getState().auth.userId
-    const response = await profileAPI.saveProfile(profile);
-    if (response.data.resultCode === 0) {
+    const data = await profileAPI.saveProfile(profile);
+    if (data.resultCode === 0) {
         dispatch(getUsersProfile(userId))
     }
 }

@@ -2,14 +2,11 @@ import { authMe } from "./auth-Reducer";
 
 const INITIALIZED_SUCCESS: string = 'samurai-network/app/INITIALIZED_SUCCESS';
 
-export type InitialStateType = {
-    initialized: boolean
-}
-let initialState: InitialStateType = {
-    initialized: false
-};
+let initialState = { initialized: false }
 
-const appReducer = (state = initialState, action: ActionsType): InitialStateType => {
+export type InitialStateType = typeof initialState
+
+const appReducer = (state = initialState, action: any): InitialStateType => {
     switch (action.type) {
         case INITIALIZED_SUCCESS:
             return { ...state, initialized: true }
@@ -20,10 +17,9 @@ const appReducer = (state = initialState, action: ActionsType): InitialStateType
 
 // === actionCreators === //
 
-type ActionsType = initializedSuccessActionType
-
-type initializedSuccessActionType = ({ type: typeof INITIALIZED_SUCCESS })
-export const initializedSuccess = (): initializedSuccessActionType => ({ type: INITIALIZED_SUCCESS })
+export const actions = {
+    initializedSuccess: () => ({ type: INITIALIZED_SUCCESS })
+}
 
 // === /actionCreators === //
 
@@ -33,7 +29,7 @@ export const initializeApp = () => (dispatch: any) => {
     let promise = dispatch(authMe())
     Promise.all([ promise ])
         .then(() => {
-            dispatch(initializedSuccess())
+            dispatch(actions.initializedSuccess())
         })
 }
 

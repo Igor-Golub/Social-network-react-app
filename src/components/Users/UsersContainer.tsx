@@ -11,7 +11,7 @@ import {
     getTotalCountS,
     getUsersS
 } from "../../redux/user-Selectors";
-import {UserType} from "../../Types/СommonTypes";
+import {UserType} from "../../types/СommonTypes";
 import {AppStateType} from "../../redux/redux-store";
 import {compose} from "redux";
 
