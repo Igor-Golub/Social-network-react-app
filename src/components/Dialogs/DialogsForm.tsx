@@ -2,8 +2,13 @@ import * as yup from "yup";
 import s from "./Dialogs.module.css";
 import {Formik} from "formik";
 import React from "react";
+import {NewMessage} from "./Dialogs";
 
-const SendMessageForm = (props) => {
+type PropsType = {
+    onSubmit: (value: NewMessage) => void
+}
+
+const SendMessageForm: React.FC<PropsType> = ({onSubmit}) => {
     const validationsSchema = yup.object().shape({
         message: yup.string().typeError('Must be sting').required('Necessarily')
     })
@@ -16,13 +21,11 @@ const SendMessageForm = (props) => {
             }
                     validationSchema={validationsSchema}
                     validateOnBlur
-                    onSubmit={props.onSubmit}
+                    onSubmit={onSubmit}
             >
                 {
                     ({
                          values,
-                         errors,
-                         touched,
                          handleChange,
                          handleBlur,
                          isValid,
@@ -40,12 +43,12 @@ const SendMessageForm = (props) => {
                                     value={values.message}
                                     placeholder={'enter message'}
                                 />
-                                {touched.textarea && errors.textarea && <p>{errors.textarea}</p>}
                             </div>
                             <div className={s.buttonWrapper}>
                                 <button
                                     className={s.buttonSendMessage}
                                     disabled={!isValid && !dirty}
+                                    //@ts-ignore
                                     onClick={handleSubmit}
                                     type={'submit'}
                                 >Send message

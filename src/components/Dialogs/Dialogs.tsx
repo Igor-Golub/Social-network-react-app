@@ -3,24 +3,34 @@ import s from './Dialogs.module.css';
 import {DialogItem} from "./DialogItem/DialogItem";
 import {MessageItem} from "./MessageItem/MessageItem";
 import SendMessageForm from "./DialogsForm";
+import {useDispatch, useSelector} from "react-redux";
+import {AppStateType} from "../../redux/redux-store";
+import {actions} from "../../redux/dialogReducer";
 
-const Dialogs = ({ dialogPage, sendMessage }) => {
+export type NewMessage = {message: string}
 
-    let dialogElements =
-        dialogPage.dialogs.map((dialogs) => <DialogItem
+const Dialogs: React.FC = () => {
+
+    const dialogPage = useSelector((state: AppStateType) => state.dialogPage)
+    const dispatch = useDispatch()
+
+    const dialogElements =
+        dialogPage.dialogs.map(dialogs => <DialogItem
+            id={dialogs.id}
             name={dialogs.name}
             key={dialogs.id}
-            id={dialogs.id}
         />);
 
-    let messageElements =
-        dialogPage.messages.map((messages) => <MessageItem
+    const messageElements =
+        dialogPage.messages.map(messages => <MessageItem
+            //id={messages.id}
             message={messages.message}
             key={messages.id}
-            id={messages.id}
         />);
 
-    let onSubmit = values => { sendMessage(values.message) }
+    const onSubmit = (values: NewMessage) => {
+        dispatch(actions.sendMessage(values.message))
+    }
 
     return (
         <div className={s.dialogs}>
