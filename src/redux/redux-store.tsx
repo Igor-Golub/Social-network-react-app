@@ -1,10 +1,10 @@
-import {applyMiddleware, combineReducers, compose, createStore} from "redux";
+import {Action, applyMiddleware, combineReducers, compose, createStore} from "redux";
 import profileReducer from "./profile-Reducer";
 import dialogReducer from "./dialogReducer";
 import friendsInformationReducer from "./friendsInformationReducer";
 import userReducer from "./user-Reducer";
 import authReducer from "./auth-Reducer";
-import thunkMiddleware from "redux-thunk";
+import thunkMiddleware, { ThunkAction } from "redux-thunk";
 import appReducer from "./app-Reducer";
 
 let rootReducer = combineReducers(
@@ -18,10 +18,13 @@ let rootReducer = combineReducers(
     }
 )
 
-// для того чтобы получить глобальный type для state
 type RootReducerType = typeof rootReducer
-// используется специпльная f ReturnType в которыю предаю RootReducerType для динамического добавления type reducers
 export type AppStateType = ReturnType<RootReducerType>
+type PropertiesTypes<T> = T extends {[key: string]: infer U} ? U : never
+export type InferActionsType<T extends {[key: string]: (...args: any[]) => any}> = ReturnType<PropertiesTypes<T>>
+export type BaseThunksType<A extends Action, R = Promise<void>> = ThunkAction<R, AppStateType, unknown, A>
+
+
 
 // @ts-ignore
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

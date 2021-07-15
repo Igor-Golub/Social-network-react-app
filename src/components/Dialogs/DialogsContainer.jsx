@@ -1,5 +1,5 @@
 import React from 'react';
-import {sendMessage} from "../../redux/dialogReducer";
+import {actions} from "../../redux/dialogReducer";
 import Dialogs from "./Dialogs";
 import {connect} from "react-redux";
 import {withAuthRedirect} from "../../HOC/withAuthRedirectHOC";
@@ -10,5 +10,7 @@ let mapStateToProps = (state) => {
         dialogPage: state.dialogPage
     }
 }
+
+const {sendMessage} = actions
 
 export default compose(connect(mapStateToProps, {sendMessage}), withAuthRedirect)(Dialogs)

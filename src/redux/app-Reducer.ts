@@ -1,27 +1,23 @@
 import { authMe } from "./auth-Reducer";
+import {InferActionsType} from "./redux-store";
 
-const INITIALIZED_SUCCESS: string = 'samurai-network/app/INITIALIZED_SUCCESS';
-
-let initialState = { initialized: false }
+const initialState = { initialized: false }
 
 export type InitialStateType = typeof initialState
+type ActionsType = InferActionsType<typeof actions>
 
-const appReducer = (state = initialState, action: any): InitialStateType => {
+const appReducer = (state = initialState, action: ActionsType): InitialStateType => {
     switch (action.type) {
-        case INITIALIZED_SUCCESS:
+        case 'app/social-network/INITIALIZED_SUCCESS':
             return { ...state, initialized: true }
         default:
             return state;
     }
 }
 
-// === actionCreators === //
-
 export const actions = {
-    initializedSuccess: () => ({ type: INITIALIZED_SUCCESS })
+    initializedSuccess: () => ({ type: 'app/social-network/INITIALIZED_SUCCESS' } as const)
 }
-
-// === /actionCreators === //
 
 // === thunks === //
 

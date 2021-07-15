@@ -1,6 +1,6 @@
 import React from "react";
 import {connect} from "react-redux";
-import {getUsers, setCurrentPage, userFollow, userUnfollow} from "../../redux/user-Reducer";
+import {getUsers, userFollow, userUnfollow} from "../../redux/user-Reducer";
 import {Users} from "./Users";
 import Preloader from "../../commons/Preloader/Preloader";
 import {
@@ -66,5 +66,5 @@ const mapStateToProps = (state: AppStateType) => {
 
 /*connect автомотически создает callback function в mDTP, то есть мы не передаем actionCreator напрямую*/
 export default compose(
-    connect(mapStateToProps,{setCurrentPage, getUsers, userUnfollow, userFollow})
+    connect(mapStateToProps,{getUsers, userUnfollow, userFollow})
 )(UsersContainer)
