@@ -7,6 +7,7 @@ export const getTotalCountS = (state: AppStateType) => state.usersPage.totalUser
 export const getCurrentPageS = (state: AppStateType) => state.usersPage.currentPage;
 export const getIsFetchingS = (state: AppStateType) => state.usersPage.isFetching;
 export const getIsFollowingProgressS = (state: AppStateType) => state.usersPage.isFollowingProgress;
+export const getUsersFilter = (state: AppStateType) => state.usersPage.filter;
 
 export const getUsersS = createSelector(getUsers, (users) => {
     return users.filter((user) => true)

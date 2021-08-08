@@ -1,6 +1,7 @@
 import {PhotosType, ProfileUserType} from "../types/СommonTypes";
 import {profileAPI} from "../api/profile-api";
 import {BaseThunksType, InferActionsType} from "./redux-store";
+import {ResultCodeEnum} from "../api/api";
 
 type PostsType = { id: string, message: string, likes: string }
 type InitialStateType = typeof initialState
@@ -73,20 +74,21 @@ export const getStatus = (userId: number): ThunksType => async (dispatch) => {
 }
 export const updateStatus = (status: string): ThunksType => async (dispatch) => {
     const data = await profileAPI.updateStatus(status)
-    if (data.resultCode === 0) {
+    if (data.resultCode === ResultCodeEnum.Success) {
         dispatch(actions.setUserProfileStatus(status))
     }
 }
 export const savePhoto = (file: File): ThunksType => async (dispatch) => {
     const data = await profileAPI.savePhoto(file);
-    if (data.resultCode === 0) {
+    if (data.resultCode === ResultCodeEnum.Success) {
         dispatch(actions.savePhotoSuccess(data.data.photos))
     }
 }
 export const saveProfile = (profile: ProfileUserType): ThunksType => async (dispatch, getState) => {
     const userId = getState().auth.userId
+    debugger;
     const data = await profileAPI.saveProfile(profile);
-    if (data.resultCode === 0) {
+    if (data.resultCode === ResultCodeEnum.Success) {
         if (userId != null) {
             dispatch(getUsersProfile(userId))
         } else {

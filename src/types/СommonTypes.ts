@@ -4,6 +4,8 @@ export type ProfileUserType = {
     lookingForAJobDescription: string
     fullName: string
     photos: PhotosType
+    aboutMe: string
+    facebook: string
 }
 export type PhotosType = {
     small: string | null,
@@ -13,5 +15,6 @@ export type UserType = {
     id: number,
     name: string,
     status: string,
-    photos: PhotosType
+    photos: PhotosType,
+    followed: boolean
 }

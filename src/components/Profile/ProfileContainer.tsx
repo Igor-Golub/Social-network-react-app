@@ -2,13 +2,31 @@ import React from "react";
 import Profile from './Profile';
 import {connect} from "react-redux";
 import {actions, getStatus, getUsersProfile, savePhoto, saveProfile, updateStatus} from "../../redux/profile-Reducer";
-import {withRouter} from "react-router-dom";
+import {RouteComponentProps, withRouter} from "react-router-dom";
 import {compose} from "redux";
+import {AppStateType} from "../../redux/redux-store";
+import {ProfileUserType} from "../../types/СommonTypes";
 
-class ProfileAPIContainer extends React.Component {
+type MapPropsType = ReturnType<typeof mapStateToProps>
+type MapDispatchType = {
+    addPost: (post: string) => void
+    getUsersProfile: (userId: number | null) => void
+    getStatus: (userId: number | null) => void
+    updateStatus: (status: string) => void
+    savePhoto: (file: File) => void
+    saveProfile: (profile: ProfileUserType) => void
+}
+
+type PathParamsType = {
+    userId: string,
+}
+
+type PropsType = MapPropsType & MapDispatchType & RouteComponentProps<PathParamsType>
+
+class ProfileAPIContainer extends React.Component<PropsType> {
 
     refreshProfile() {
-        let userId = this.props.match.params.userId
+        let userId: number | null = +this.props.match.params.userId
         if (!userId) {
             userId = this.props.authorizedUserId
             if (!userId) {
@@ -23,7 +41,7 @@ class ProfileAPIContainer extends React.Component {
         this.refreshProfile()
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
+    componentDidUpdate(prevProps: PropsType, prevState: PropsType) {
         if (this.props.match.params.userId !== prevProps.match.params.userId) {
             this.refreshProfile()
         }
@@ -32,7 +50,9 @@ class ProfileAPIContainer extends React.Component {
     render() {
         return (
             <div>
-                <Profile {...this.props} profile={this.props.profileUser}
+                <Profile {...this.props}
+                  //@ts-ignore
+                         profile={this.props.profileUser}
                          isOwner={!this.props.match.params.userId}
                          status={this.props.profileStatus}
                          updateStatus={this.props.updateStatus}
@@ -45,7 +65,7 @@ class ProfileAPIContainer extends React.Component {
     }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: AppStateType) => {
     return {
         profileUser: state.profilePage.profileUser,
         profileStatus: state.profilePage.status,
