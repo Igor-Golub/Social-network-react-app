@@ -3,9 +3,10 @@ import s from './Profile.module.css';
 import ProfileInfo from "./ProfileInfo/ProfileInfo";
 import {ProfileUserType} from "../../types/СommonTypes";
 import MyPosts from "./MyPosts/MyPosts";
+import {useSelector} from "react-redux";
+import {AppStateType} from "../../redux/redux-store";
 
 type PropsType = {
-  profileUser: ProfileUserType | null,
   status: string,
   updateStatus: (status: string) => void,
   isOwner: boolean,
@@ -13,7 +14,9 @@ type PropsType = {
   saveProfile: (profile: ProfileUserType) => void
 }
 
-const Profile: React.FC<PropsType> = ({profileUser, status, updateStatus, isOwner, savePhoto, saveProfile}) => {
+const Profile: React.FC<PropsType> = ({ status, updateStatus, isOwner, savePhoto, saveProfile}) => {
+
+  const profileUser = useSelector((state: AppStateType) => state.profilePage.profileUser )
 
   return (
     <div className={s.profileWrapper}>
