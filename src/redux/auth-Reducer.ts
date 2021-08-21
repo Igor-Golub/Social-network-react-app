@@ -69,7 +69,6 @@ export const authLogin = (email: string, password: string,
 }
 
 export const authLogout = (): ThunksType => async (dispatch) => {
-    debugger
     const authLogoutData = await authAPI.authLogout()
     if (authLogoutData.resultCode === ResultCodeEnum.Success) {
         dispatch(actions.setAuthUserData(null, null, null, false))
