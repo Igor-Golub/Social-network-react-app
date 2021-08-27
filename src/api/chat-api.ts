@@ -1,4 +1,9 @@
-import {WS_CHANNEL_STATUS_CLOSE, WS_WSS_URL} from "../commons/Constants/Constants";
+import {
+  WS_CHANNEL_EVENT_CLOSE, WS_CHANNEL_EVENT_ERROR,
+  WS_CHANNEL_EVENT_MESSAGE, WS_CHANNEL_EVENT_OPEN,
+  WS_CHANNEL_STATUS_PENDING, WS_CHANNEL_STATUS_READY,
+  WS_WSS_URL
+} from "../commons/Constants/Constants";
 
 export type ChatMessage = {
   message: string,
@@ -6,25 +11,51 @@ export type ChatMessage = {
   userId: number,
   userName: string
 }
+type EventsNames = 'messages-received' | 'status-changed'
+type MessagesReceivedSubscriber = (messages: ChatMessage[]) => void
+type StatusChangedSubscriber = (messages: string) => void
 
-let subscribes = [] as Array<(messages: ChatMessage[]) => void>
+const subscribes = {
+  'messages-received': [] as MessagesReceivedSubscriber[],
+  'status-changed': [] as StatusChangedSubscriber[]
+}
 
 let ws: WebSocket | null = null;
 
-const closeHandler = () => setTimeout(createChanel, 3000)
+const closeHandler = () => {
+  notifyAboutStatusGhanged(WS_CHANNEL_STATUS_PENDING)
+  setTimeout(createChanel, 3000)
+}
+
+const openHandler = () => notifyAboutStatusGhanged(WS_CHANNEL_STATUS_READY)
+const errorHandler = () => notifyAboutStatusGhanged(WS_CHANNEL_EVENT_ERROR)
 
 const messageHandler = (event: MessageEvent) => {
   const newMessage = JSON.parse(event.data)
-  subscribes.forEach(s => s(newMessage))
+  subscribes["messages-received"].forEach(s => s(newMessage))
+}
+
+const cleanUp = () => {
+  ws?.removeEventListener(WS_CHANNEL_EVENT_CLOSE, closeHandler)
+  ws?.removeEventListener(WS_CHANNEL_EVENT_MESSAGE, messageHandler)
+  ws?.removeEventListener(WS_CHANNEL_EVENT_OPEN, openHandler)
+  ws?.removeEventListener(WS_CHANNEL_EVENT_ERROR, errorHandler)
+  ws?.close()
+}
+
+const notifyAboutStatusGhanged = (status: string) => {
+  subscribes['status-changed'].forEach(s => s(status))
 }
 
 function createChanel() {
-  ws?.removeEventListener(WS_CHANNEL_STATUS_CLOSE, closeHandler)
-  ws?.close()
+  cleanUp()
 
   ws = new WebSocket(WS_WSS_URL);
-  ws?.addEventListener(WS_CHANNEL_STATUS_CLOSE, closeHandler)
-  ws?.addEventListener('message', messageHandler)
+  notifyAboutStatusGhanged(WS_CHANNEL_STATUS_PENDING)
+  ws?.addEventListener(WS_CHANNEL_EVENT_CLOSE, closeHandler)
+  ws?.addEventListener(WS_CHANNEL_EVENT_MESSAGE, messageHandler)
+  ws?.addEventListener(WS_CHANNEL_EVENT_OPEN, openHandler)
+  ws?.addEventListener(WS_CHANNEL_EVENT_ERROR, errorHandler)
 }
 
 export const chatAPI = {
@@ -32,20 +63,22 @@ export const chatAPI = {
     createChanel()
   },
   stop() {
-    subscribes = []
-    ws?.removeEventListener(WS_CHANNEL_STATUS_CLOSE, closeHandler)
-    ws?.removeEventListener('message', messageHandler)
-    ws?.close()
+    subscribes['messages-received'] = []
+    subscribes['status-changed']= []
+    cleanUp()
   },
-  subscribe(callback: (messages: ChatMessage[]) => void) {
-    subscribes.push(callback)
+  subscribe(eventName: EventsNames, callback: MessagesReceivedSubscriber | StatusChangedSubscriber) {
+    // @ts-ignore
+    subscribes[eventName].push(callback)
 
     return () => {
-      subscribes = subscribes.filter(s => s !== callback)
+      // @ts-ignore
+      subscribes[eventName] = subscribes[eventName].filter(s => s !== callback)
     }
   },
-  unsubscribe(callback: (messages: ChatMessage[]) => void) {
-    subscribes = subscribes.filter(s => s !== callback)
+  unsubscribe(eventName: EventsNames, callback: MessagesReceivedSubscriber | StatusChangedSubscriber) {
+    // @ts-ignore
+    subscribes[eventName] = subscribes[eventName].filter(s => s !== callback)
   },
   sendMessage(message: string) {
     ws?.send(message)

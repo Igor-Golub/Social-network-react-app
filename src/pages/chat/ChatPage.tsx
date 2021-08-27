@@ -1,15 +1,10 @@
 import React, {useEffect, useState} from "react";
 import {Button, Col, Input, Row} from 'antd';
-import {
-  WS_CHANNEL_STATUS_CLOSE,
-  WS_CHANNEL_STATUS_PENDING,
-  WS_CHANNEL_STATUS_READY,
-  WS_WSS_URL
-} from "../../commons/Constants/Constants";
 import {ChatMessage} from "../../api/chat-api";
 import {useDispatch, useSelector} from "react-redux";
 import {sendMessage, startMessagesListening, stopMessagesListening} from "../../redux/chat-Reducer";
 import {AppStateType} from "../../redux/redux-store";
+import {WS_CHANNEL_STATUS_READY, WS_CHANNEL_EVENT_ERROR} from "../../commons/Constants/Constants";
 
 const ChatPage: React.FC = () => {
 
@@ -19,6 +14,7 @@ const ChatPage: React.FC = () => {
 const Chat: React.FC = () => {
 
   const dispatch = useDispatch();
+  const status = useSelector((state: AppStateType) => state.chat.status)
 
   useEffect(() => {
     dispatch(startMessagesListening())
@@ -29,8 +25,14 @@ const Chat: React.FC = () => {
 
 
   return <>
-    <Messages />
-    <ChatMessageForm />
+    {status === WS_CHANNEL_EVENT_ERROR
+      ? <div>Some error occurred. Please refresh the page.</div>
+      : <>
+        <Messages/>
+        <ChatMessageForm/>
+      </>
+    }
+
   </>
 }
 
@@ -56,8 +58,7 @@ const ChatMessageForm = () => {
 
   const dispatch = useDispatch();
   const [message, setMessage] = useState('');
-  const [channelStatus, setChannelStatus] = useState(WS_CHANNEL_STATUS_PENDING);
-
+  const status = useSelector((state: AppStateType) => state.chat.status)
 
   const sendKeyMessageHandler = (event: { key: string; }) => {
 
@@ -72,7 +73,7 @@ const ChatMessageForm = () => {
       return
     }
 
-    dispatch(sendMessage(message) )
+    dispatch(sendMessage(message))
     setMessage('');
   }
 
@@ -86,7 +87,7 @@ const ChatMessageForm = () => {
       </Col>
       <Col span={1}>
         <Button ghost type="primary"
-                disabled={false}
+                disabled={status !== WS_CHANNEL_STATUS_READY}
                 onClick={sendMessageHandler}>
           Send
         </Button>
