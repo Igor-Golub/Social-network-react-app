@@ -61,7 +61,7 @@ const App = () => {
                 <Menu.Item key="5"> <Link to={PATH_USERS}>Users</Link></Menu.Item>
               </SubMenu>
               <SubMenu key="sub3" icon={<MessageFilled />} title="Chat">
-                <Menu.Item key="6"> <Link to={PATH_CHAT}>Users</Link></Menu.Item>
+                <Menu.Item key="6"> <Link to={PATH_CHAT}>Chat</Link></Menu.Item>
               </SubMenu>
             </Menu>
           </Sider>
