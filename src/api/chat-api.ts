@@ -5,14 +5,14 @@ import {
   WS_WSS_URL
 } from "../commons/Constants/Constants";
 
-export type ChatMessage = {
+export type ChatMessageAPI = {
   message: string,
   photo: string,
   userId: number,
   userName: string
 }
 type EventsNames = 'messages-received' | 'status-changed'
-type MessagesReceivedSubscriber = (messages: ChatMessage[]) => void
+type MessagesReceivedSubscriber = (messages: ChatMessageAPI[]) => void
 type StatusChangedSubscriber = (messages: string) => void
 
 const subscribes = {
