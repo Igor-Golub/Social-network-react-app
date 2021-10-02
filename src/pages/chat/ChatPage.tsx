@@ -14,28 +14,6 @@ const ChatPage: React.FC = () => {
 
 const Chat: React.FC = () => {
 
-  return <>
-    <Messages/>
-    <ChatMessageForm/>
-  </>
-}
-
-const Messages: React.FC = () => {
-
-  const [messages, setMessages] = useState<ChatMessage[]>([])
-
-  useEffect(() => {
-    WS.addEventListener(
-      'message',
-      (event: MessageEvent) => setMessages(prev => [...prev, ...JSON.parse(event.data)]))
-  }, [])
-
-  return <>
-    {messages.map((message, index) => <Message key={index} message={message}/>)}
-  </>
-}
-
-const Message: React.FC<{ message: ChatMessage }> = ({message}) => {
   const dispatch = useDispatch();
   const status = useSelector((state: AppStateType) => state.chat.status)
 
@@ -49,10 +27,10 @@ const Message: React.FC<{ message: ChatMessage }> = ({message}) => {
 
   return <>
     {status === WS_CHANNEL_EVENT_ERROR && <div>Some error occurred. Please refresh the page.</div>}
-      <>
-        <Messages/>
-        <ChatMessageForm/>
-      </>
+    <>
+      <Messages/>
+      <ChatMessageForm/>
+    </>
   </>
 }
 
@@ -85,6 +63,7 @@ const Messages = () => {
 }
 
 const Message: React.FC<{ message: ChatMessageAPI }> = React.memo(({message}) => {
+
   return <>
     <img src={message.photo} style={{width: '30px', borderRadius: '100%'}}/> <b>{message.userName}</b>
     <br/>
@@ -93,64 +72,46 @@ const Message: React.FC<{ message: ChatMessageAPI }> = React.memo(({message}) =>
   </>
 })
 
-const ChatMessageForm: React.FC = () => {
+const ChatMessageForm = () => {
 
+  const dispatch = useDispatch();
   const [message, setMessage] = useState('');
+  const status = useSelector((state: AppStateType) => state.chat.status)
 
-  const sendMessage = (event: any) => {
+  const sendKeyMessageHandler = (event: { key: string; }) => {
+
+    if (event.key === 'Enter') {
+      dispatch(sendMessage(message))
+      setMessage('');
+    }
+  }
+
+  const sendMessageHandler = () => {
     if (!message) {
       return
     }
 
-    if (event.key === 'Enter') {
-      WS.send(message)
-      setMessage('');
-    }
-
-    WS.send(message)
+    dispatch(sendMessage(message))
+    setMessage('');
   }
 
-  const ChatMessageForm = () => {
-
-    const dispatch = useDispatch();
-    const [message, setMessage] = useState('');
-    const status = useSelector((state: AppStateType) => state.chat.status)
-
-    const sendKeyMessageHandler = (event: { key: string; }) => {
-
-      if (event.key === 'Enter') {
-        dispatch(sendMessage(message))
-        setMessage('');
-      }
-    }
-
-    const sendMessageHandler = () => {
-      if (!message) {
-        return
-      }
-
-      dispatch(sendMessage(message))
-      setMessage('');
-    }
-
-    return (
-      <Row justify='center' align='middle'>
-        <Col span={23}>
-          <Input placeholder="Basic usage"
-                 onKeyPress={sendKeyMessageHandler}
-                 onChange={e => setMessage(e.currentTarget.value)}
-                 value={message}/>
-        </Col>
-        <Col span={1}>
-          <Button ghost type="primary"
-                  disabled={status !== WS_CHANNEL_STATUS_READY}
-                  onClick={sendMessageHandler}>
-            Send
-          </Button>
-        </Col>
-      </Row>
-    )
-  }
+  return (
+    <Row justify='center' align='middle'>
+      <Col span={23}>
+        <Input placeholder="Basic usage"
+               onKeyPress={sendKeyMessageHandler}
+               onChange={e => setMessage(e.currentTarget.value)}
+               value={message}/>
+      </Col>
+      <Col span={1}>
+        <Button ghost type="primary"
+                disabled={status !== WS_CHANNEL_STATUS_READY}
+                onClick={sendMessageHandler}>
+          Send
+        </Button>
+      </Col>
+    </Row>
+  )
 }
 
 export default ChatPage;

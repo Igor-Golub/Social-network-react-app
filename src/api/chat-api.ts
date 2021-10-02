@@ -64,7 +64,7 @@ export const chatAPI = {
   },
   stop() {
     subscribes['messages-received'] = []
-    subscribes['status-changed']= []
+    subscribes['status-changed'] = []
     cleanUp()
   },
   subscribe(eventName: EventsNames, callback: MessagesReceivedSubscriber | StatusChangedSubscriber) {
